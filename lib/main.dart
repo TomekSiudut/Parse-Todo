@@ -13,7 +13,6 @@ void main() async {
 
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
-
   configureDependencies();
   runApp(MyApp());
 }
