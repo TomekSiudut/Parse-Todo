@@ -1,13 +1,13 @@
 import "package:flutter/material.dart";
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:todo/core/data/result.dart';
 import 'package:todo/core/util/dependencies.dart';
 import 'package:todo/features/todos/domain/todo_entity.dart';
 import 'package:todo/features/todos/domain/todo_repository.dart';
-import 'package:todo/features/todos/presentation/bloc/add_todo_cubit.dart';
+import 'package:todo/features/todos/presentation/bloc/todo_cubit.dart';
 import 'package:todo/features/todos/presentation/bloc/text_input_cubit.dart';
+import 'package:todo/features/todos/presentation/widgets/basic_dialog.dart';
 
 class AddTodoDialog extends StatelessWidget {
   final Function()? onBack;
@@ -16,7 +16,7 @@ class AddTodoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddTodoCubit(getIt<TodoRepository>()),
+      create: (context) => TodoCubit(getIt<TodoRepository>()),
       child: AddTodoWidget(
         onBack: onBack,
       ),
@@ -32,7 +32,7 @@ class AddTodoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddTodoCubit, Result>(
+    return BlocConsumer<TodoCubit, Result>(
       listener: (context, state) {
         if (state is Success) {
           Navigator.of(context).pop();
@@ -40,38 +40,30 @@ class AddTodoWidget extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        var cubit = context.watch<AddTodoCubit>();
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          elevation: 0,
-          backgroundColor: Colors.white,
-          child: Padding(
-            padding: EdgeInsets.all(20.0.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text("Add New Todo",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.blue)),
-                SizedBox(
-                  height: 20.0.h,
-                ),
-                TextField(
-                  onChanged: (text) => inputCubit.onChanged(text),
-                ),
-                SizedBox(
-                  height: 20.0.h,
-                ),
-                state.when(() => button(context, cubit, inputCubit),
-                    loading: () => CircularProgressIndicator(),
-                    initial: () => button(context, cubit, inputCubit),
-                    error: (message) => button(context, cubit, inputCubit),
-                    success: (data) => button(context, cubit, inputCubit))
-              ],
-            ),
+        var cubit = context.watch<TodoCubit>();
+        return BasicDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text("Add New Todo",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.blue)),
+              SizedBox(
+                height: 20.0.h,
+              ),
+              TextField(
+                onChanged: (text) => inputCubit.onChanged(text),
+              ),
+              SizedBox(
+                height: 20.0.h,
+              ),
+              state.when(() => button(context, cubit, inputCubit),
+                  loading: () => CircularProgressIndicator(),
+                  initial: () => button(context, cubit, inputCubit),
+                  error: (message) => button(context, cubit, inputCubit),
+                  success: (data) => button(context, cubit, inputCubit))
+            ],
           ),
         );
       },
@@ -79,7 +71,7 @@ class AddTodoWidget extends StatelessWidget {
   }
 
   Widget button(
-      BuildContext context, AddTodoCubit cubit, TextInputCubit inputCubit) {
+      BuildContext context, TodoCubit cubit, TextInputCubit inputCubit) {
     return TextButton(
       onPressed: () {
         final newTodo =

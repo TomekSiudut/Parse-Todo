@@ -4,7 +4,8 @@ import 'package:todo/features/todos/domain/todo_entity.dart';
 
 class TodoTile extends StatelessWidget {
   final TodoEntity todo;
-  TodoTile({required this.todo});
+  final Function()? onBack;
+  TodoTile({required this.todo, this.onBack});
 
   @override
   Widget build(BuildContext context) {

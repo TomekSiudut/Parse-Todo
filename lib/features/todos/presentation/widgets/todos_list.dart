@@ -5,7 +5,8 @@ import 'package:todo/features/todos/presentation/widgets/todo_tile.dart';
 
 class TodosList extends StatelessWidget {
   final List<TodoEntity> data;
-  TodosList({required this.data});
+  final Function()? onBack;
+  TodosList({required this.data, this.onBack});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,10 @@ class TodosList extends StatelessWidget {
       child: ListView.builder(
           itemCount: data.length,
           itemBuilder: (BuildContext context, index) {
-            return TodoTile(todo: data[index]);
+            return TodoTile(
+              todo: data[index],
+              onBack: onBack,
+            );
           }),
     );
   }

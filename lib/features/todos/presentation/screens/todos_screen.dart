@@ -43,7 +43,10 @@ class TodosPage extends StatelessWidget {
                       child: Text(
                           "You have no todos. Click + button and create one !")));
             }
-            return TodosList(data: data);
+            return TodosList(
+              data: data,
+              onBack: cubit.refresh,
+            );
           } else if (state is Loading) {
             return Center(child: CircularProgressIndicator());
           }

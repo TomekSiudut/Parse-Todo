@@ -23,7 +23,7 @@ class TodoRepositoryImpl implements TodoRepository {
         return Result.success(entity);
       }
     }
-    return Result.error("Something went wrong");
+    return Result.error("something went wrong");
   }
 
   @override
@@ -38,5 +38,16 @@ class TodoRepositoryImpl implements TodoRepository {
       },
     );
     return response;
+  }
+
+  @override
+  Future<Result> deleteTodo(String todoId) async {
+    var todo = ParseObject('Todo')..objectId = todoId;
+    final response = await todo.delete();
+    if (response.success) {
+      return Result.success("ok");
+    } else {
+      return Result.error("something went wrong");
+    }
   }
 }
