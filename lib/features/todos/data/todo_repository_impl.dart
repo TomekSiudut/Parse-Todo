@@ -24,4 +24,21 @@ class TodoRepositoryImpl implements TodoRepository {
     }
     return Result.error("Something went wrong");
   }
+
+  @override
+  Future<Result<List<TodoEntity>?>> getTodos() async {
+    QueryBuilder<ParseObject> queryTodo =
+        QueryBuilder<ParseObject>(ParseObject('Todo'));
+    final ParseResponse response = await queryTodo.query();
+
+    if (response.success && response.result != null) {
+      return Result.success([
+        TodoEntity(title: "firstTodo", priority: false),
+        TodoEntity(title: "SecondTodo", priority: false),
+        TodoEntity(title: "ThirdTodo", priority: false)
+      ]);
+    }
+
+    return Result.error("Something went wrong");
+  }
 }
