@@ -6,7 +6,11 @@ class TodosListCubit extends Cubit<Result> {
   final TodoRepository repository;
   TodosListCubit(this.repository) : super(Result.initial());
 
-  getAllTodos() async {
+  refresh() {
+    emit(Result.initial());
+  }
+
+  init() async {
     emit(Result.loading());
     final response = await repository.getTodos();
     emit(response);
