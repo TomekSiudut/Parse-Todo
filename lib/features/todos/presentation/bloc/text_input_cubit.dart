@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
 part 'text_input_state.dart';
 
 class TextInputCubit extends Cubit<TextInputState> {
@@ -12,6 +11,5 @@ class TextInputCubit extends Cubit<TextInputState> {
   onChanged(String text) {
     _value = text;
     emit(TextInputInitial());
-    print(_value);
   }
 }
