@@ -10,19 +10,23 @@ import 'package:todo/features/todos/presentation/bloc/add_todo_cubit.dart';
 import 'package:todo/features/todos/presentation/bloc/text_input_cubit.dart';
 
 class AddTodoDialog extends StatelessWidget {
-  const AddTodoDialog({Key? key}) : super(key: key);
+  final Function()? onBack;
+  AddTodoDialog({this.onBack});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddTodoCubit(getIt<TodoRepository>()),
-      child: AddTodoWidget(),
+      child: AddTodoWidget(
+        onBack: onBack,
+      ),
     );
   }
 }
 
 class AddTodoWidget extends StatelessWidget {
-  AddTodoWidget({Key? key}) : super(key: key);
+  final Function()? onBack;
+  AddTodoWidget({this.onBack});
 
   final inputCubit = TextInputCubit();
 
@@ -32,6 +36,7 @@ class AddTodoWidget extends StatelessWidget {
       listener: (context, state) {
         if (state is Success) {
           Navigator.of(context).pop();
+          if (onBack != null) onBack!();
         }
       },
       builder: (context, state) {

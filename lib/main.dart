@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'core/util/dependencies.dart';
-import 'features/todos/presentation/screens/home_screen.dart';
+import 'features/todos/presentation/screens/todos_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomeScreen(),
+        home: TodosScreen(),
       ),
     );
   }
