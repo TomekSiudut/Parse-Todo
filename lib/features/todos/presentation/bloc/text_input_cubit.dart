@@ -12,4 +12,9 @@ class TextInputCubit extends Cubit<TextInputState> {
     _value = text;
     emit(TextInputInitial());
   }
+
+  initValue(String text) {
+    _value = text;
+    emit(TextInputInitial());
+  }
 }

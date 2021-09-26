@@ -11,7 +11,8 @@ import 'package:todo/features/todos/presentation/widgets/basic_dialog.dart';
 
 class AddTodoDialog extends StatelessWidget {
   final Function()? onBack;
-  AddTodoDialog({this.onBack});
+  final TodoEntity? todo;
+  AddTodoDialog({this.onBack, this.todo});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class AddTodoDialog extends StatelessWidget {
       create: (context) => TodoCubit(getIt<TodoRepository>()),
       child: AddTodoWidget(
         onBack: onBack,
+        todo: todo,
       ),
     );
   }
@@ -26,12 +28,14 @@ class AddTodoDialog extends StatelessWidget {
 
 class AddTodoWidget extends StatelessWidget {
   final Function()? onBack;
-  AddTodoWidget({this.onBack});
-
-  final inputCubit = TextInputCubit();
+  final TodoEntity? todo;
+  AddTodoWidget({this.onBack, this.todo});
 
   @override
   Widget build(BuildContext context) {
+    final inputCubit = TextInputCubit();
+    inputCubit.initValue(todo?.title ?? "");
+
     return BlocConsumer<TodoCubit, Result>(
       listener: (context, state) {
         if (state is Success) {
@@ -46,13 +50,14 @@ class AddTodoWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text("Add New Todo",
+              Text(todo != null ? "Edit Todo" : "Add New Todo",
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.blue)),
               SizedBox(
                 height: 20.0.h,
               ),
-              TextField(
+              TextFormField(
+                initialValue: inputCubit.getValue(),
                 onChanged: (text) => inputCubit.onChanged(text),
               ),
               SizedBox(
@@ -74,11 +79,13 @@ class AddTodoWidget extends StatelessWidget {
       BuildContext context, TodoCubit cubit, TextInputCubit inputCubit) {
     return TextButton(
       onPressed: () {
-        final newTodo =
-            TodoEntity(title: inputCubit.getValue(), priority: false);
+        final newTodo = TodoEntity(
+            id: todo?.id ?? null,
+            title: inputCubit.getValue(),
+            priority: false);
         cubit.createTodo(newTodo);
       },
-      child: Text("Add"),
+      child: Text(todo != null ? "Save" : "Add"),
       style: TextButton.styleFrom(
         primary: Colors.white,
         backgroundColor: Colors.blue,

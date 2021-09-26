@@ -12,6 +12,9 @@ class TodoRepositoryImpl implements TodoRepository {
   Future<Result> createTodo(TodoEntity todo) async {
     final newTodo = Todo();
 
+    if (todo.id != null) {
+      newTodo.objectId = todo.id;
+    }
     newTodo.title = todo.title;
     newTodo.priority = todo.priority;
 

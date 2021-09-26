@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo/features/todos/domain/todo_entity.dart';
+import 'package:todo/features/todos/presentation/widgets/add_todo_dialog.dart';
 import 'package:todo/features/todos/presentation/widgets/delete_confirm_dialog.dart';
 
 class TodoTile extends StatelessWidget {
@@ -28,7 +29,15 @@ class TodoTile extends StatelessWidget {
                             fontWeight: FontWeight.bold, color: Colors.blue)),
                     Row(
                       children: <Widget>[
-                        Container(child: Icon(Icons.edit, color: Colors.blue)),
+                        InkWell(
+                            onTap: () => showDialog(
+                                context: context,
+                                builder: (_) => AddTodoDialog(
+                                      onBack: onBack,
+                                      todo: todo,
+                                    )),
+                            child: Container(
+                                child: Icon(Icons.edit, color: Colors.blue))),
                         SizedBox(width: 20.w),
                         InkWell(
                             onTap: () => showDialog(

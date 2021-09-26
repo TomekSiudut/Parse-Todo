@@ -37,7 +37,7 @@ class TodosPage extends StatelessWidget {
           }
           if (state is Success) {
             final data = state.data ?? [];
-            if (data.isEmpty) {
+            if (data.length == 0) {
               return Center(
                   child: Container(
                       child: Text(
