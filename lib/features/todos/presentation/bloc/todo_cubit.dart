@@ -12,4 +12,10 @@ class TodoCubit extends Cubit<Result> {
     final result = await repository.createTodo(todo);
     emit(result);
   }
+
+  deleteTodo(String todoId) async {
+    emit(Result.loading());
+    final result = await repository.deleteTodo(todoId);
+    emit(result);
+  }
 }

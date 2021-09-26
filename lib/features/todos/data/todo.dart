@@ -52,5 +52,5 @@ class Todo extends ParseObject implements ParseCloneable {
 
 extension Mapping on Todo {
   TodoEntity mapToEntity() =>
-      TodoEntity(title: this.title, priority: this.priority);
+      TodoEntity(id: this.objectId, title: this.title, priority: this.priority);
 }
